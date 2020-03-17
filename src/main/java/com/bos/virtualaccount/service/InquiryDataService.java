@@ -16,50 +16,68 @@ public class InquiryDataService {
     TransactionRepository g_transactionRepository;
 
     public InquiryDataResponse getBill(InquiryDataRequest p_inquiryDataRequest){
+        InquiryDataResponse l_inquiryDataResponse = new InquiryDataResponse();
+        InquiryReason l_inquiryReason = new InquiryReason();
+
         try {
-            System.out.println(g_transactionRepository.getTransactionByTransactionId(Integer.valueOf(p_inquiryDataRequest.getCustomerNumber())));
+            //Check bill to transaction table
             if (g_transactionRepository.getTransactionByTransactionId(Integer.valueOf(p_inquiryDataRequest.getCustomerNumber())).equals(Optional.empty())){
-                InquiryDataResponse tmp_inquiryDataResponse = new InquiryDataResponse();
-                tmp_inquiryDataResponse.setCompanyCode(p_inquiryDataRequest.getCompanyCode());
-                tmp_inquiryDataResponse.setRequestID(p_inquiryDataRequest.getRequestID());
-                tmp_inquiryDataResponse.setInquiryStatus("01");
+                l_inquiryReason.setIndonesian("Tagihan tidak ditemukan");
+                l_inquiryReason.setEnglish("Bill not found");
 
-                return tmp_inquiryDataResponse;
+                l_inquiryDataResponse.setCompanyCode(p_inquiryDataRequest.getCompanyCode());
+                l_inquiryDataResponse.setCustomerNumber(p_inquiryDataRequest.getCustomerNumber());
+                l_inquiryDataResponse.setRequestID(p_inquiryDataRequest.getRequestID());
+                l_inquiryDataResponse.setInquiryStatus("01");
+                l_inquiryDataResponse.setInquiryReason(l_inquiryReason);
 
-            }else if (g_transactionRepository.getStatusByTransactionId(Integer.valueOf(p_inquiryDataRequest.getCustomerNumber()))!=1){
-                InquiryDataResponse tmp_inquiryDataResponse = new InquiryDataResponse();
-                tmp_inquiryDataResponse.setCompanyCode(p_inquiryDataRequest.getCompanyCode());
-                tmp_inquiryDataResponse.setRequestID(p_inquiryDataRequest.getRequestID());
-                tmp_inquiryDataResponse.setInquiryStatus("01");
+                return l_inquiryDataResponse;
 
-                return tmp_inquiryDataResponse;
+            //Check status to transaction table
+            }else if (g_transactionRepository.getStatusByTransactionId(Integer.valueOf(p_inquiryDataRequest.getCustomerNumber()))!=0){
+                l_inquiryReason.setIndonesian("Tagihan tidak ditemukan");
+                l_inquiryReason.setEnglish("Bill not found");
 
+                l_inquiryDataResponse.setCompanyCode(p_inquiryDataRequest.getCompanyCode());
+                l_inquiryDataResponse.setCustomerNumber(p_inquiryDataRequest.getCustomerNumber());
+                l_inquiryDataResponse.setRequestID(p_inquiryDataRequest.getRequestID());
+                l_inquiryDataResponse.setInquiryStatus("01");
+                l_inquiryDataResponse.setInquiryReason(l_inquiryReason);
+
+                return l_inquiryDataResponse;
+
+            //If bill exist and status=0 (belum terbayar)
             }else {
-                InquiryReason tmp_inquiryReason = new InquiryReason();
-                tmp_inquiryReason.setIndonesian("Sukses");
-                tmp_inquiryReason.setEnglish("Success");
+                //update id_request to transaction table
+                g_transactionRepository.updateRequestId(p_inquiryDataRequest.getRequestID(), Integer.valueOf(p_inquiryDataRequest.getCustomerNumber()));
+
+                l_inquiryReason.setIndonesian("Sukses");
+                l_inquiryReason.setEnglish("Success");
 
                 Optional<Transaction> tmp_transaction = g_transactionRepository.getTransactionByTransactionId(Integer.valueOf(p_inquiryDataRequest.getCustomerNumber()));
-                InquiryDataResponse tmp_inquiryDataResponse = new InquiryDataResponse();
-                tmp_inquiryDataResponse.setCompanyCode(p_inquiryDataRequest.getCompanyCode());
-                tmp_inquiryDataResponse.setCustomerNumber(p_inquiryDataRequest.getCustomerNumber());
-                tmp_inquiryDataResponse.setRequestID(p_inquiryDataRequest.getRequestID());
-                tmp_inquiryDataResponse.setTotalAmount(tmp_transaction.get().getTotal_payment());
-                tmp_inquiryDataResponse.setInquiryStatus("00");
-                tmp_inquiryDataResponse.setInquiryReason(tmp_inquiryReason);
-                tmp_inquiryDataResponse.setCurrencyCode("IDR");
+                l_inquiryDataResponse.setCompanyCode(p_inquiryDataRequest.getCompanyCode());
+                l_inquiryDataResponse.setCustomerNumber(p_inquiryDataRequest.getCustomerNumber());
+                l_inquiryDataResponse.setRequestID(p_inquiryDataRequest.getRequestID());
+                l_inquiryDataResponse.setTotalAmount(tmp_transaction.get().getTotal_payment());
+                l_inquiryDataResponse.setInquiryStatus("00");
+                l_inquiryDataResponse.setInquiryReason(l_inquiryReason);
+                l_inquiryDataResponse.setCurrencyCode("IDR");
 
-                return tmp_inquiryDataResponse;
+                return l_inquiryDataResponse;
             }
 
         }catch (Exception e){
             e.printStackTrace();
-            InquiryDataResponse tmp_inquiryDataResponse = new InquiryDataResponse();
-            tmp_inquiryDataResponse.setCompanyCode(p_inquiryDataRequest.getCompanyCode());
-            tmp_inquiryDataResponse.setRequestID(p_inquiryDataRequest.getRequestID());
-            tmp_inquiryDataResponse.setInquiryStatus("01");
+            l_inquiryReason.setIndonesian("Gagal inquiry ke database");
+            l_inquiryReason.setEnglish("Failed inquiry to database");
 
-            return tmp_inquiryDataResponse;
+            l_inquiryDataResponse.setCompanyCode(p_inquiryDataRequest.getCompanyCode());
+            l_inquiryDataResponse.setCustomerNumber(p_inquiryDataRequest.getCustomerNumber());
+            l_inquiryDataResponse.setRequestID(p_inquiryDataRequest.getRequestID());
+            l_inquiryDataResponse.setInquiryStatus("01");
+            l_inquiryDataResponse.setInquiryReason(l_inquiryReason);
+
+            return l_inquiryDataResponse;
         }
     }
 }
