@@ -17,29 +17,8 @@ public class InquiryDataController {
     @Autowired
     InquiryDataService g_inquiryDataService;
 
-    @Autowired
-    PaymentConfService paymentConfService;
-
     @PostMapping(value = "/bill", consumes = "application/json")
     public InquiryDataResponse getBill(@RequestBody InquiryDataRequest p_inquiryDataRequest){
         return g_inquiryDataService.getBill(p_inquiryDataRequest);
-    }
-
-    @PostMapping(value = "/payment", consumes = "application/json")
-    public PaymentConfResponse upStatus(@RequestBody PaymentConfRequest request){
-        try {
-            System.out.println("Try up status service");
-            return paymentConfService.upStatus(request);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-
-            PaymentReason reason = new PaymentReason();
-
-            reason.setEnglish("System under maintenance-0");
-            reason.setIndonesian("Sistem dalam perbaikan-0");
-
-            return paymentConfService.jawaban(request,"01",reason);
-        }
     }
 }

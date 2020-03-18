@@ -4,6 +4,7 @@ import com.bos.virtualaccount.dim.Transaction;
 import com.bos.virtualaccount.model.InquiryBills.InquiryDataRequest;
 import com.bos.virtualaccount.model.InquiryBills.InquiryDataResponse;
 import com.bos.virtualaccount.model.InquiryBills.InquiryReason;
+import com.bos.virtualaccount.model.PaymentConf.PaymentConfResponse;
 import com.bos.virtualaccount.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,18 @@ public class InquiryDataService {
     @Autowired
     TransactionRepository g_transactionRepository;
 
+    private InquiryDataResponse jawaban(InquiryDataRequest request, String status, InquiryReason reason){
+        InquiryDataResponse response = new InquiryDataResponse();
+
+        response.setCompanyCode(request.getCompanyCode());
+        response.setCustomerNumber(request.getCustomerNumber());
+        response.setRequestID(request.getRequestID());
+        response.setInquiryStatus(status);
+        response.setInquiryReason(reason);
+
+        return response;
+    }
+
     public InquiryDataResponse getBill(InquiryDataRequest p_inquiryDataRequest){
         InquiryDataResponse l_inquiryDataResponse = new InquiryDataResponse();
         InquiryReason l_inquiryReason = new InquiryReason();
@@ -25,11 +38,7 @@ public class InquiryDataService {
                 l_inquiryReason.setIndonesian("Tagihan tidak ditemukan");
                 l_inquiryReason.setEnglish("Bill not found");
 
-                l_inquiryDataResponse.setCompanyCode(p_inquiryDataRequest.getCompanyCode());
-                l_inquiryDataResponse.setCustomerNumber(p_inquiryDataRequest.getCustomerNumber());
-                l_inquiryDataResponse.setRequestID(p_inquiryDataRequest.getRequestID());
-                l_inquiryDataResponse.setInquiryStatus("01");
-                l_inquiryDataResponse.setInquiryReason(l_inquiryReason);
+                l_inquiryDataResponse = jawaban(p_inquiryDataRequest,"01",l_inquiryReason);
 
                 return l_inquiryDataResponse;
 
@@ -38,11 +47,7 @@ public class InquiryDataService {
                 l_inquiryReason.setIndonesian("Tagihan tidak ditemukan");
                 l_inquiryReason.setEnglish("Bill not found");
 
-                l_inquiryDataResponse.setCompanyCode(p_inquiryDataRequest.getCompanyCode());
-                l_inquiryDataResponse.setCustomerNumber(p_inquiryDataRequest.getCustomerNumber());
-                l_inquiryDataResponse.setRequestID(p_inquiryDataRequest.getRequestID());
-                l_inquiryDataResponse.setInquiryStatus("01");
-                l_inquiryDataResponse.setInquiryReason(l_inquiryReason);
+                l_inquiryDataResponse = jawaban(p_inquiryDataRequest,"01",l_inquiryReason);
 
                 return l_inquiryDataResponse;
 
@@ -55,13 +60,11 @@ public class InquiryDataService {
                 l_inquiryReason.setEnglish("Success");
 
                 Optional<Transaction> tmp_transaction = g_transactionRepository.getTransactionByTransactionId(Integer.parseInt(p_inquiryDataRequest.getCustomerNumber()));
-                l_inquiryDataResponse.setCompanyCode(p_inquiryDataRequest.getCompanyCode());
-                l_inquiryDataResponse.setCustomerNumber(p_inquiryDataRequest.getCustomerNumber());
-                l_inquiryDataResponse.setRequestID(p_inquiryDataRequest.getRequestID());
                 l_inquiryDataResponse.setTotalAmount(tmp_transaction.get().getTotal_payment());
                 l_inquiryDataResponse.setInquiryStatus("00");
-                l_inquiryDataResponse.setInquiryReason(l_inquiryReason);
                 l_inquiryDataResponse.setCurrencyCode("IDR");
+
+                l_inquiryDataResponse = jawaban(p_inquiryDataRequest,"01",l_inquiryReason);
 
                 return l_inquiryDataResponse;
             }
@@ -71,11 +74,7 @@ public class InquiryDataService {
             l_inquiryReason.setIndonesian("Gagal inquiry ke database");
             l_inquiryReason.setEnglish("Failed inquiry to database");
 
-            l_inquiryDataResponse.setCompanyCode(p_inquiryDataRequest.getCompanyCode());
-            l_inquiryDataResponse.setCustomerNumber(p_inquiryDataRequest.getCustomerNumber());
-            l_inquiryDataResponse.setRequestID(p_inquiryDataRequest.getRequestID());
-            l_inquiryDataResponse.setInquiryStatus("01");
-            l_inquiryDataResponse.setInquiryReason(l_inquiryReason);
+            l_inquiryDataResponse = jawaban(p_inquiryDataRequest,"01",l_inquiryReason);
 
             return l_inquiryDataResponse;
         }
