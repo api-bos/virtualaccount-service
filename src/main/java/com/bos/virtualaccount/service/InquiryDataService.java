@@ -1,9 +1,9 @@
 package com.bos.virtualaccount.service;
 
 import com.bos.virtualaccount.dim.Transaction;
-import com.bos.virtualaccount.model.InquiryDataRequest;
-import com.bos.virtualaccount.model.InquiryDataResponse;
-import com.bos.virtualaccount.model.InquiryReason;
+import com.bos.virtualaccount.model.InquiryBills.InquiryDataRequest;
+import com.bos.virtualaccount.model.InquiryBills.InquiryDataResponse;
+import com.bos.virtualaccount.model.InquiryBills.InquiryReason;
 import com.bos.virtualaccount.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class InquiryDataService {
 
         try {
             //Check bill to transaction table
-            if (g_transactionRepository.getTransactionByTransactionId(Integer.valueOf(p_inquiryDataRequest.getCustomerNumber())).equals(Optional.empty())){
+            if (g_transactionRepository.getTransactionByTransactionId(Integer.parseInt(p_inquiryDataRequest.getCustomerNumber())).equals(Optional.empty())){
                 l_inquiryReason.setIndonesian("Tagihan tidak ditemukan");
                 l_inquiryReason.setEnglish("Bill not found");
 
@@ -34,7 +34,7 @@ public class InquiryDataService {
                 return l_inquiryDataResponse;
 
             //Check status to transaction table
-            }else if (g_transactionRepository.getStatusByTransactionId(Integer.valueOf(p_inquiryDataRequest.getCustomerNumber()))!=0){
+            }else if (g_transactionRepository.getStatusByTransactionId(Integer.parseInt(p_inquiryDataRequest.getCustomerNumber()))!=0){
                 l_inquiryReason.setIndonesian("Tagihan tidak ditemukan");
                 l_inquiryReason.setEnglish("Bill not found");
 
@@ -49,12 +49,12 @@ public class InquiryDataService {
             //If bill exist and status=0 (belum terbayar)
             }else {
                 //update id_request to transaction table
-                g_transactionRepository.updateRequestId(p_inquiryDataRequest.getRequestID(), Integer.valueOf(p_inquiryDataRequest.getCustomerNumber()));
+                g_transactionRepository.updateRequestId(p_inquiryDataRequest.getRequestID(), Integer.parseInt(p_inquiryDataRequest.getCustomerNumber()));
 
                 l_inquiryReason.setIndonesian("Sukses");
                 l_inquiryReason.setEnglish("Success");
 
-                Optional<Transaction> tmp_transaction = g_transactionRepository.getTransactionByTransactionId(Integer.valueOf(p_inquiryDataRequest.getCustomerNumber()));
+                Optional<Transaction> tmp_transaction = g_transactionRepository.getTransactionByTransactionId(Integer.parseInt(p_inquiryDataRequest.getCustomerNumber()));
                 l_inquiryDataResponse.setCompanyCode(p_inquiryDataRequest.getCompanyCode());
                 l_inquiryDataResponse.setCustomerNumber(p_inquiryDataRequest.getCustomerNumber());
                 l_inquiryDataResponse.setRequestID(p_inquiryDataRequest.getRequestID());

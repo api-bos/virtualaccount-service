@@ -19,4 +19,11 @@ public class Transaction {
     private int id_transaction;
     private String total_payment;
     private int status;
+    /*
+    status:
+    0 --> pesanan baru
+    1 --> sudah terbayar
+    2 --> sudah dikirim
+    3 --> selesai
+     */
 }
