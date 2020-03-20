@@ -1,0 +1,16 @@
+com\bos\virtualaccount\service\InquiryDataService.class
+com\bos\virtualaccount\model\General\FreeText.class
+com\bos\virtualaccount\model\InquiryBills\InquiryDataResponse.class
+com\bos\virtualaccount\model\InquiryBills\InquiryReason.class
+com\bos\virtualaccount\model\PaymentConf\PaymentConfRequest.class
+com\bos\virtualaccount\service\PaymentConfService.class
+com\bos\virtualaccount\controller\InquiryDataController.class
+com\bos\virtualaccount\dim\Transaction.class
+com\bos\virtualaccount\VirtualaccountApplication.class
+com\bos\virtualaccount\model\General\BillDescription.class
+com\bos\virtualaccount\controller\PaymentConfController.class
+com\bos\virtualaccount\model\General\DetailBills.class
+com\bos\virtualaccount\model\InquiryBills\InquiryDataRequest.class
+com\bos\virtualaccount\model\PaymentConf\PaymentConfResponse.class
+com\bos\virtualaccount\model\PaymentConf\PaymentReason.class
+com\bos\virtualaccount\repository\TransactionRepository.class

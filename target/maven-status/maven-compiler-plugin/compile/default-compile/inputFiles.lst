@@ -1,0 +1,16 @@
+C:\Users\U067726\Downloads\Github\virtualaccount-service\src\main\java\com\bos\virtualaccount\model\General\BillDescription.java
+C:\Users\U067726\Downloads\Github\virtualaccount-service\src\main\java\com\bos\virtualaccount\dim\Transaction.java
+C:\Users\U067726\Downloads\Github\virtualaccount-service\src\main\java\com\bos\virtualaccount\repository\TransactionRepository.java
+C:\Users\U067726\Downloads\Github\virtualaccount-service\src\main\java\com\bos\virtualaccount\model\InquiryBills\InquiryDataResponse.java
+C:\Users\U067726\Downloads\Github\virtualaccount-service\src\main\java\com\bos\virtualaccount\model\PaymentConf\PaymentReason.java
+C:\Users\U067726\Downloads\Github\virtualaccount-service\src\main\java\com\bos\virtualaccount\VirtualaccountApplication.java
+C:\Users\U067726\Downloads\Github\virtualaccount-service\src\main\java\com\bos\virtualaccount\model\General\DetailBills.java
+C:\Users\U067726\Downloads\Github\virtualaccount-service\src\main\java\com\bos\virtualaccount\model\General\FreeText.java
+C:\Users\U067726\Downloads\Github\virtualaccount-service\src\main\java\com\bos\virtualaccount\model\InquiryBills\InquiryReason.java
+C:\Users\U067726\Downloads\Github\virtualaccount-service\src\main\java\com\bos\virtualaccount\model\PaymentConf\PaymentConfResponse.java
+C:\Users\U067726\Downloads\Github\virtualaccount-service\src\main\java\com\bos\virtualaccount\service\InquiryDataService.java
+C:\Users\U067726\Downloads\Github\virtualaccount-service\src\main\java\com\bos\virtualaccount\controller\PaymentConfController.java
+C:\Users\U067726\Downloads\Github\virtualaccount-service\src\main\java\com\bos\virtualaccount\model\PaymentConf\PaymentConfRequest.java
+C:\Users\U067726\Downloads\Github\virtualaccount-service\src\main\java\com\bos\virtualaccount\model\InquiryBills\InquiryDataRequest.java
+C:\Users\U067726\Downloads\Github\virtualaccount-service\src\main\java\com\bos\virtualaccount\controller\InquiryDataController.java
+C:\Users\U067726\Downloads\Github\virtualaccount-service\src\main\java\com\bos\virtualaccount\service\PaymentConfService.java

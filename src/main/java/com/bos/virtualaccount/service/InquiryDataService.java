@@ -4,7 +4,6 @@ import com.bos.virtualaccount.dim.Transaction;
 import com.bos.virtualaccount.model.InquiryBills.InquiryDataRequest;
 import com.bos.virtualaccount.model.InquiryBills.InquiryDataResponse;
 import com.bos.virtualaccount.model.InquiryBills.InquiryReason;
-import com.bos.virtualaccount.model.PaymentConf.PaymentConfResponse;
 import com.bos.virtualaccount.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +33,7 @@ public class InquiryDataService {
 
         try {
             //Check bill to transaction table
-            if (g_transactionRepository.getTransactionByTransactionId(Integer.parseInt(p_inquiryDataRequest.getCustomerNumber())).equals(Optional.empty())){
+            if (g_transactionRepository.getTransactionByVANumber(p_inquiryDataRequest.getCustomerNumber()).equals(Optional.empty())){
                 l_inquiryReason.setIndonesian("Tagihan tidak ditemukan");
                 l_inquiryReason.setEnglish("Bill not found");
 
@@ -43,7 +42,7 @@ public class InquiryDataService {
                 return l_inquiryDataResponse;
 
             //Check status to transaction table
-            }else if (g_transactionRepository.getStatusByTransactionId(Integer.parseInt(p_inquiryDataRequest.getCustomerNumber()))!=0){
+            }else if (g_transactionRepository.getStatusByTransactionId(p_inquiryDataRequest.getCustomerNumber())!=0){
                 l_inquiryReason.setIndonesian("Tagihan tidak ditemukan");
                 l_inquiryReason.setEnglish("Bill not found");
 
@@ -54,17 +53,16 @@ public class InquiryDataService {
             //If bill exist and status=0 (belum terbayar)
             }else {
                 //update id_request to transaction table
-                g_transactionRepository.updateRequestId(p_inquiryDataRequest.getRequestID(), Integer.parseInt(p_inquiryDataRequest.getCustomerNumber()));
+                g_transactionRepository.updateRequestId(p_inquiryDataRequest.getRequestID(), p_inquiryDataRequest.getCustomerNumber());
 
                 l_inquiryReason.setIndonesian("Sukses");
                 l_inquiryReason.setEnglish("Success");
 
-                Optional<Transaction> tmp_transaction = g_transactionRepository.getTransactionByTransactionId(Integer.parseInt(p_inquiryDataRequest.getCustomerNumber()));
+                Optional<Transaction> tmp_transaction = g_transactionRepository.getTransactionByVANumber(p_inquiryDataRequest.getCustomerNumber());
                 l_inquiryDataResponse.setTotalAmount(tmp_transaction.get().getTotal_payment());
-                l_inquiryDataResponse.setInquiryStatus("00");
                 l_inquiryDataResponse.setCurrencyCode("IDR");
 
-                l_inquiryDataResponse = jawaban(p_inquiryDataRequest,"01",l_inquiryReason);
+                l_inquiryDataResponse = jawaban(p_inquiryDataRequest,"00",l_inquiryReason);
 
                 return l_inquiryDataResponse;
             }

@@ -2,11 +2,7 @@ package com.bos.virtualaccount.controller;
 
 import com.bos.virtualaccount.model.InquiryBills.InquiryDataRequest;
 import com.bos.virtualaccount.model.InquiryBills.InquiryDataResponse;
-import com.bos.virtualaccount.model.PaymentConf.PaymentConfRequest;
-import com.bos.virtualaccount.model.PaymentConf.PaymentConfResponse;
-import com.bos.virtualaccount.model.PaymentConf.PaymentReason;
 import com.bos.virtualaccount.service.InquiryDataService;
-import com.bos.virtualaccount.service.PaymentConfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

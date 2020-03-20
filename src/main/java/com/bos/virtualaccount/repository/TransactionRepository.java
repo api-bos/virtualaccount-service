@@ -7,32 +7,36 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
-    @Query(value = "SELECT * FROM transaction WHERE id_transaction = :id_transaction", nativeQuery = true)
-    Optional<Transaction> getTransactionByTransactionId(@Param("id_transaction") int id_transaction);
+    @Query(value = "SELECT * FROM transaction WHERE va_number = :va_number", nativeQuery = true)
+    Optional<Transaction> getTransactionByVANumber(@Param("va_number") String va_number);
 
     @Query(value = "SELECT status FROM transaction WHERE id_transaction = :id_transaction", nativeQuery = true)
     Integer getStatusByTransactionId(@Param("id_transaction") Integer id_transaction);
 
+    @Query(value = "SELECT status FROM transaction WHERE va_number = :va_number", nativeQuery = true)
+    Integer getStatusByTransactionId(@Param("va_number") String va_number);
+
     @Transactional
     @Modifying
-    @Query(value = "UPDATE transaction SET request_id = :request_id WHERE id_transaction = :id_transaction", nativeQuery = true)
-    void updateRequestId(@Param("request_id") String request_id, @Param("id_transaction") int id_transaction);
+    @Query(value = "UPDATE transaction SET request_id = :request_id WHERE va_number = :va_number", nativeQuery = true)
+    void updateRequestId(@Param("request_id") String request_id, @Param("va_number") String va_number);
 
     @Query(nativeQuery = true,
             value = "SELECT id_transaction " +
                     "FROM transaction " +
-                    "WHERE id_transaction = :idTrx")
-    Integer getTrxId1(@Param("idTrx") Integer idTrx); // dapat id_trx berdasarkan id_trx
+                    "WHERE va_number = :vaNum")
+    Integer getTrxId1(@Param("vaNum") String vaNum); // dapat id_trx berdasarkan id_trx
 
     @Query(nativeQuery = true,
             value = "SELECT request_id " +
                     "FROM transaction " +
-                    "WHERE id_transaction = :idTrx")
-    String getTrxId2(@Param("idTrx") Integer idTrx); // dapat request_id berdasarkan id_transaksi
+                    "WHERE va_number = :vaNum")
+    String getTrxId2(@Param("vaNum") String vaNum); // dapat request_id berdasarkan id_transaksi
 
     @Query(nativeQuery = true,
             value = "SELECT request_id " +
@@ -43,14 +47,14 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
     @Query(nativeQuery = true,
            value = "SELECT * " +
                    "FROM transaction " +
-                   "WHERE id_transaction = :idTrx AND request_id = :reqId")
-    List<Transaction> getTransactionByTrxIdAndReqId(@Param("idTrx") Integer idTrx, @Param("reqId") String reqId);
+                   "WHERE va_number = :vaNum AND request_id = :reqId")
+    List<Transaction> getTransactionByTrxIdAndReqId(@Param("vaNum") String vaNum, @Param("reqId") String reqId);
 
     @Transactional
     @Modifying
     @Query(nativeQuery = true,
            value = "UPDATE transaction " +
-                   "SET status = 1 " +
-                   "WHERE id_transaction = :idTrx AND request_id = :reqId ")
-    void updateStatus(@Param("idTrx") Integer idTrx, @Param("reqId") String reqId);
+                   "SET status = 1, payment_time = :paymentTime " +
+                   "WHERE va_number = :vaNum AND request_id = :reqId ")
+    void updateTransaction(@Param("paymentTime") Timestamp paymentTime, @Param("vaNum") String vaNum, @Param("reqId") String reqId);
 }

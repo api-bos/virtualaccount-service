@@ -8,6 +8,7 @@ import com.bos.virtualaccount.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -39,18 +40,18 @@ public class PaymentConfService {
         System.out.println("\n======================Inputs======================");
         String reqId = request.getRequestID();
         System.out.println("ReqId   : "+reqId);
-        Integer trxId = Integer.valueOf(request.getCustomerNumber());
-        System.out.println("TrxId   : " +trxId);
-        Integer status = repository.getStatusByTransactionId(trxId);
+        String vaNum = request.getCustomerNumber();
+        System.out.println("TrxId   : " +vaNum);
+        Integer status = repository.getStatusByTransactionId(vaNum);
         if(status == null) status = 999;
         System.out.println("Status  : "+status);
 
-        List<Transaction> data = repository.getTransactionByTrxIdAndReqId(trxId,reqId);
+        List<Transaction> data = repository.getTransactionByTrxIdAndReqId(vaNum,reqId);
 
         if(!(data.isEmpty()) && (status == 0)){
             System.out.println("Data tersedia");
             try{
-                repository.updateStatus(trxId,reqId);
+                repository.updateTransaction(new Timestamp(System.currentTimeMillis()), vaNum,reqId);
                 System.out.println("Update Success");
 
                 reason.setEnglish("Success");
@@ -70,10 +71,10 @@ public class PaymentConfService {
         else
         {
             System.out.println("\n====================Verifikasi====================");
-            Integer vTrxId1 = repository.getTrxId1(trxId);
+            Integer vTrxId1 = repository.getTrxId1(vaNum);
             if(vTrxId1 == null) vTrxId1 = 999;
             System.out.println("vTrxId1 (transaction_id)            : "+vTrxId1);
-            String vTrxId2 = repository.getTrxId2(trxId);
+            String vTrxId2 = repository.getTrxId2(vaNum);
             if(vTrxId2 == null) vTrxId2 = "null";
             System.out.println("vTrxId2 (reqId by transaction_id)   : "+vTrxId2);
 
