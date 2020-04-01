@@ -19,7 +19,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
     Integer getStatusByTransactionId(@Param("id_transaction") Integer id_transaction);
 
     @Query(value = "SELECT status FROM transaction WHERE va_number = :va_number", nativeQuery = true)
-    Integer getStatusByTransactionId(@Param("va_number") String va_number);
+    Integer getStatusByVANum(@Param("va_number") String va_number);
 
     @Transactional
     @Modifying
@@ -30,13 +30,13 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
             value = "SELECT id_transaction " +
                     "FROM transaction " +
                     "WHERE va_number = :vaNum")
-    Integer getTrxId1(@Param("vaNum") String vaNum); // dapat id_trx berdasarkan id_trx
+    Integer getVANum1(@Param("vaNum") String vaNum); // dapat id_trx berdasarkan id_trx
 
     @Query(nativeQuery = true,
             value = "SELECT request_id " +
                     "FROM transaction " +
                     "WHERE va_number = :vaNum")
-    String getTrxId2(@Param("vaNum") String vaNum); // dapat request_id berdasarkan id_transaksi
+    String getVANum2(@Param("vaNum") String vaNum); // dapat request_id berdasarkan id_transaksi
 
     @Query(nativeQuery = true,
             value = "SELECT request_id " +
@@ -48,7 +48,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
            value = "SELECT * " +
                    "FROM transaction " +
                    "WHERE va_number = :vaNum AND request_id = :reqId")
-    List<Transaction> getTransactionByTrxIdAndReqId(@Param("vaNum") String vaNum, @Param("reqId") String reqId);
+    List<Transaction> getTransactionByVANumAndReqId(@Param("vaNum") String vaNum, @Param("reqId") String reqId);
 
     @Transactional
     @Modifying

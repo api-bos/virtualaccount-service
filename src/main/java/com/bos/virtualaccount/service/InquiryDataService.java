@@ -42,7 +42,7 @@ public class InquiryDataService {
                 return l_inquiryDataResponse;
 
             //Check status to transaction table
-            }else if (g_transactionRepository.getStatusByTransactionId(p_inquiryDataRequest.getCustomerNumber())!=0){
+            }else if (g_transactionRepository.getStatusByVANum(p_inquiryDataRequest.getCustomerNumber())!=0){
                 l_inquiryReason.setIndonesian("Tagihan tidak ditemukan");
                 l_inquiryReason.setEnglish("Bill not found");
 

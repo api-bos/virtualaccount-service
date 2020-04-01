@@ -41,12 +41,12 @@ public class PaymentConfService {
         String reqId = request.getRequestID();
         System.out.println("ReqId   : "+reqId);
         String vaNum = request.getCustomerNumber();
-        System.out.println("TrxId   : " +vaNum);
-        Integer status = repository.getStatusByTransactionId(vaNum);
+        System.out.println("VaNum   : " +vaNum);
+        Integer status = repository.getStatusByVANum(vaNum);
         if(status == null) status = 999;
         System.out.println("Status  : "+status);
 
-        List<Transaction> data = repository.getTransactionByTrxIdAndReqId(vaNum,reqId);
+        List<Transaction> data = repository.getTransactionByVANumAndReqId(vaNum,reqId);
 
         if(!(data.isEmpty()) && (status == 0)){
             System.out.println("Data tersedia");
@@ -71,22 +71,22 @@ public class PaymentConfService {
         else
         {
             System.out.println("\n====================Verifikasi====================");
-            Integer vTrxId1 = repository.getTrxId1(vaNum);
-            if(vTrxId1 == null) vTrxId1 = 999;
-            System.out.println("vTrxId1 (transaction_id)            : "+vTrxId1);
-            String vTrxId2 = repository.getTrxId2(vaNum);
-            if(vTrxId2 == null) vTrxId2 = "null";
-            System.out.println("vTrxId2 (reqId by transaction_id)   : "+vTrxId2);
+            Integer vVaNum1 = repository.getVANum1(vaNum);
+            if(vVaNum1 == null) vVaNum1 = 999;
+            System.out.println("vVaNum1 (va_number)            : "+vVaNum1);
+            String vVaNum2 = repository.getVANum2(vaNum);
+            if(vVaNum2 == null) vVaNum2 = "null";
+            System.out.println("vVaNum2 (reqId by va_number)   : "+vVaNum2);
 
             String vReqId = repository.getReqId(reqId);
             if(vReqId == null) vReqId = "null";
-            System.out.println("vReqId (request_id)                 : "+vReqId);
+            System.out.println("vReqId (request_id)             : "+vReqId);
 
             System.out.println("Hasil: ");
-            if(vTrxId1 == 999 || vReqId.equals("null"))
-                System.out.print("Transaction Id atau Request Id tidak ditemukan/salah");
-            else if(vTrxId2.equals("null") || !vTrxId2.equals(reqId))
-                System.out.print("Request Id tidak ditemukan atau input Transaction Id salah");
+            if(vVaNum1 == 999 || vReqId.equals("null"))
+                System.out.print("VA Number atau Request Id tidak ditemukan/salah");
+            else if(vVaNum2.equals("null") || !vVaNum2.equals(reqId))
+                System.out.print("Request Id tidak ditemukan atau input VA Number salah");
             else if (status != 0 && status != 999) {
                 System.out.print("Status transaksi bukan 0");
             }
