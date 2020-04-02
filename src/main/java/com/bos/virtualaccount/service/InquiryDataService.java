@@ -59,10 +59,10 @@ public class InquiryDataService {
                 l_inquiryReason.setEnglish("Success");
 
                 Optional<Transaction> tmp_transaction = g_transactionRepository.getTransactionByVANumber(p_inquiryDataRequest.getCustomerNumber());
-                l_inquiryDataResponse.setTotalAmount(tmp_transaction.get().getTotal_payment());
-                l_inquiryDataResponse.setCurrencyCode("IDR");
 
                 l_inquiryDataResponse = jawaban(p_inquiryDataRequest,"00",l_inquiryReason);
+                l_inquiryDataResponse.setTotalAmount(tmp_transaction.get().getTotal_payment());
+                l_inquiryDataResponse.setCurrencyCode("IDR");
 
                 return l_inquiryDataResponse;
             }
